@@ -1,18 +1,20 @@
 [
     {
-        "modid": "examplemod",
-        "name": "ExampleMod",
-        "description": "Template Mod",
+        "modid": "skyflock",
+        "name": "Skyflock",
+        "description": "1.8.9 Mod for Hypixel Skyblock",
         "version": "${version}",
         "mcversion": "${mcversion}",
         "url": "",
         "updateUrl": "",
         "authorList": [
-            "Debuggings"
+            "mfaridn03"
         ],
         "credits": "",
         "logoFile": "",
         "screenshots": [],
-        "dependencies": []
+        "dependencies": [
+            "Essential"
+        ]
     }
 ]

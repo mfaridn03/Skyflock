@@ -1,4 +1,4 @@
-package dev.debuggings.examplemod.mixins;
+package dev.farid.skyflock.mixins;
 
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinMinecraft {
 
     @Inject(method = "startGame", at = @At("TAIL"))
-    private void exampleMod$startGame(CallbackInfo ci) {
+    private void startGame(CallbackInfo ci) {
         System.out.println("Successfully injected into startGame.");
     }
 }

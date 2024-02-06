@@ -8,7 +8,7 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-group = "dev.debuggings"
+group = "dev.farid"
 version = "1.0.0"
 
 loom {
@@ -21,13 +21,17 @@ loom {
     launchConfigs {
         getByName("client") {
             arg("--tweakClass", "gg.essential.loader.stage0.EssentialSetupTweaker")
-            arg("--mixin", "mixins.examplemod.json")
+            arg("--mixin", "mixins.skyflock.json")
         }
     }
 
     forge {
         pack200Provider.set(Pack200Adapter())
-        mixinConfig("mixins.examplemod.json")
+        mixinConfig("mixins.skyflock.json")
+    }
+
+    mixin {
+        defaultRefmapName.set("mixins.skyflock.refmap.json")
     }
 }
 
@@ -59,7 +63,7 @@ tasks {
             mapOf(
                 "ModSide" to "CLIENT",
                 "TweakClass" to "gg.essential.loader.stage0.EssentialSetupTweaker",
-                "MixinConfigs" to "mixins.examplemod.json"
+                "MixinConfigs" to "mixins.skyflock.json"
             )
         )
     }
