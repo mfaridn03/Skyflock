@@ -12,11 +12,11 @@ public class SkyflockConfig extends Vigilant {
 
     @Property(
             type = PropertyType.SWITCH,
-            name = "Test",
-            description = "Check that everything is working right",
-            category = "General"
+            name = "Remove Death Animation",
+            description = "Removes entity death animation",
+            category = "QOL"
     )
-    public boolean test = false;
+    public boolean noDeathAnim = false;
 
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
