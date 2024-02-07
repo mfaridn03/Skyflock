@@ -1,5 +1,5 @@
 # Skyflock
-1.8.9 Forge mod for Hypixel Skyblock
+1.8.9 Forge mod for Hypixel Skyblock with Essentials.
 
 ## Installation
 1. Download the latest release from the [releases page](https://github.com/mfaridn03/Skyflock/releases).
