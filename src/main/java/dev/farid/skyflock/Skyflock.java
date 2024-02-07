@@ -4,6 +4,7 @@ package dev.farid.skyflock;
 import dev.farid.skyflock.command.CommandManager;
 import dev.farid.skyflock.config.SkyflockConfig;
 import dev.farid.skyflock.features.FeatureManager;
+import dev.farid.skyflock.utils.LocationUtils;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,7 +35,8 @@ public class Skyflock {
         commandManager.init();
 
         MinecraftForge.EVENT_BUS.register(this);
-        printLogs(null, "Successfully loaded commands", false);
+        MinecraftForge.EVENT_BUS.register(new LocationUtils());
+        printLogs(null, "Successfully loaded", false);
     }
 
     public static void printLogs(@Nullable EntityPlayerSP player, String message, boolean playSound) {

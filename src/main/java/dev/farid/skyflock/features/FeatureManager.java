@@ -1,5 +1,6 @@
 package dev.farid.skyflock.features;
 
+import dev.farid.skyflock.features.dungeons.MinibossHp;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -18,6 +19,9 @@ public class FeatureManager {
 
         // qol
         this.features.add(new NoEntityDeath());
+
+        // dungeons
+        this.features.add(new MinibossHp());
     }
 
     public void init() {

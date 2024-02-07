@@ -3,19 +3,15 @@ package dev.farid.skyflock.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import dev.farid.skyflock.Skyflock;
 import dev.farid.skyflock.utils.RenderUtils;
 import gg.essential.api.utils.GuiUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
