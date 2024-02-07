@@ -16,5 +16,5 @@ public abstract class Feature {
     public void onEnable() {}
     public void onDisable() {}
 
-    public abstract boolean getConfigStatus(); // return the corresponding variable from config
+    public abstract boolean getConfigStatus();
 }

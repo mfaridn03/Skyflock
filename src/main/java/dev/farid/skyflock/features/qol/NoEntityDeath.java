@@ -2,6 +2,7 @@ package dev.farid.skyflock.features.qol;
 
 import dev.farid.skyflock.Skyflock;
 import dev.farid.skyflock.features.Feature;
+import dev.farid.skyflock.utils.LocationUtils;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -21,6 +22,6 @@ public class NoEntityDeath extends Feature {
 
     @Override
     public boolean getConfigStatus() {
-        return Skyflock.config.noDeathAnim;
+        return Skyflock.config.noDeathAnim && LocationUtils.inSkyblock;
     }
 }
