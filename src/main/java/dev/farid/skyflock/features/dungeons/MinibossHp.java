@@ -2,10 +2,13 @@ package dev.farid.skyflock.features.dungeons;
 
 import dev.farid.skyflock.Skyflock;
 import dev.farid.skyflock.features.Feature;
+import dev.farid.skyflock.utils.DungeonUtils;
 import dev.farid.skyflock.utils.LocationUtils;
+import gg.essential.universal.UChat;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -17,6 +20,7 @@ import java.util.*;
 import java.util.List;
 
 public class MinibossHp extends Feature {
+    // TODO: tracer to miniboss
 
     private final Set<String> minisNames = new HashSet<>(
             Arrays.asList(
@@ -37,6 +41,8 @@ public class MinibossHp extends Feature {
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Post event) {
+        if (!getConfigStatus()) return;
+
         EntityWrapper temp = this.targetMini;
         if (temp == null || !LocationUtils.inDungeons || event.type != RenderGameOverlayEvent.ElementType.ALL)
             return;
@@ -72,7 +78,8 @@ public class MinibossHp extends Feature {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
-        if (!LocationUtils.inDungeons)
+        if (!getConfigStatus()) return;
+        if (!LocationUtils.inDungeons || DungeonUtils.boss != null)
             return;
 
         List<EntityOtherPlayerMP> entities = mc.theWorld.getEntities(

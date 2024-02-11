@@ -1,5 +1,6 @@
 package dev.farid.skyflock.features;
 
+import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
 import net.minecraftforge.common.MinecraftForge;
@@ -22,6 +23,7 @@ public class FeatureManager {
 
         // dungeons
         this.features.add(new MinibossHp());
+        this.features.add(new LividHelper());
     }
 
     public void init() {

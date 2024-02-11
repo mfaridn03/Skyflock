@@ -1,6 +1,7 @@
 package dev.farid.skyflock.utils;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import gg.essential.universal.UChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
@@ -35,7 +36,6 @@ public class PlayerUtils {
             String temp2 = formatted ? temp : ChatFormatting.stripFormatting(temp);
             lines.add(TextUtils.removeUnicode(temp2));
         }
-
         return lines;
     }
 }

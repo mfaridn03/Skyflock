@@ -14,8 +14,7 @@ public class NoEntityDeath extends Feature {
 
     @SubscribeEvent
     public void onEntityDeath(LivingDeathEvent event) {
-        if (!getConfigStatus())
-            return;
+        if (!getConfigStatus()) return;
 
         event.entity.setDead();
     }

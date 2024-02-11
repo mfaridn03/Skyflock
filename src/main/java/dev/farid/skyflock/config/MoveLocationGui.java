@@ -130,9 +130,9 @@ public class MoveLocationGui extends GuiScreen {
         FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
         // horizontal
-        RenderUtils.guiDrawLine(0f, (float) this.y, (float) sr.getScaledWidth(), this.y, 1f);
+        RenderUtils.Render2D.drawLine(0f, (float) this.y, (float) sr.getScaledWidth(), this.y, 1f);
         // vertical
-        RenderUtils.guiDrawLine((float) this.x, 0f, (float) this.x, sr.getScaledHeight(), 1f);
+        RenderUtils.Render2D.drawLine((float) this.x, 0f, (float) this.x, sr.getScaledHeight(), 1f);
 
         int yOffset = 0;
         for (String s : this.texts) {

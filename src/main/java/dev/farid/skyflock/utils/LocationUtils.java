@@ -25,26 +25,19 @@ public class LocationUtils {
 
         ScoreObjective so = mc.thePlayer.getWorldScoreboard().getObjectiveInDisplaySlot(1);
         if (so == null) {
-            if (inSkyblock)
-                UChat.chat("Exited skyblock");
             return false;
         }
 
-        boolean b = ChatFormatting.stripFormatting(so.getDisplayName()).contains("SKYBLOCK");
-        if (b && !inSkyblock)
-            UChat.chat("Entered skyblock");
-        else if (!b && inSkyblock)
-            UChat.chat("Exited skyblock");
-
-        return b;
+        return ChatFormatting.stripFormatting(so.getDisplayName()).contains("SKYBLOCK");
     }
 
     private boolean checkDungeons() {
         // assumes inSkyblock is true
         Object match = TextUtils.getMatchFromLines(
-                "(The Catacombs)|(Cleared:)",
+                "(The Catacombs)|(Cleared\\:)",
                 PlayerUtils.getScoreboardLines(false),
-                null
+                null,
+                0
         );
         return match != null;
     }

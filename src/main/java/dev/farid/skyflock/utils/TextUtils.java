@@ -26,7 +26,7 @@ public class TextUtils {
      * @param type The optional type of the matching object. 'int' returns an Integer, 'float' returns Float, otherwise returns String
      * @return The matching object based on the provided regular expression and type. If no match is found or the list is null, returns null.
      */
-    public static Object getMatchFromLines(String regex, List<String> list, @Nullable String type) {
+    public static Object getMatchFromLines(String regex, List<String> list, @Nullable String type, @Nullable Integer group) {
         if (list == null)
             return null;
 
@@ -40,7 +40,7 @@ public class TextUtils {
                 continue;
             }
 
-            String matchGroup = matcher.group(0);
+            String matchGroup = matcher.group(group == null ? 1 : group);
 
             if (type == null)
                 return matchGroup;

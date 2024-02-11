@@ -4,6 +4,7 @@ package dev.farid.skyflock;
 import dev.farid.skyflock.command.CommandManager;
 import dev.farid.skyflock.config.SkyflockConfig;
 import dev.farid.skyflock.features.FeatureManager;
+import dev.farid.skyflock.utils.DungeonUtils;
 import dev.farid.skyflock.utils.LocationUtils;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ChatComponentText;
@@ -34,9 +35,18 @@ public class Skyflock {
         featureManager.init();
         commandManager.init();
 
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new LocationUtils());
-        printLogs(null, "Successfully loaded", false);
+        registerEvents(
+                this,
+                new LocationUtils(),
+                new DungeonUtils()
+        );
+    }
+
+    public void registerEvents(Object... objects) {
+        for (Object o : objects) {
+            MinecraftForge.EVENT_BUS.register(o);
+            printLogs(null, "Successfully registered to event bus: " + o.toString(), false);
+        }
     }
 
     public static void printLogs(@Nullable EntityPlayerSP player, String message, boolean playSound) {

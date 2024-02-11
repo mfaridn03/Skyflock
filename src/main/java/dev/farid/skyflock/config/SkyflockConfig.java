@@ -40,6 +40,17 @@ public class SkyflockConfig extends Vigilant {
         this.minibossHealthGui.open();
     }
 
+    @Property(
+            type = PropertyType.SELECTOR,
+            name = "Livid Bossfight Helper",
+            description = "Draws an arrow to the correct livid colour, or a tracer to it.§l Use this alongside other livid boss solvers§r\n" +
+                    "§cIf tracer mode, disable view bobbing§r otherwise the line will look ugly",
+            category = "Dungeons",
+            subcategory = "Livid Extras",
+            options = {"Disabled", "Arrow", "Tracer"}
+    )
+    public int pointToCorrectLivid = 0;
+
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();
