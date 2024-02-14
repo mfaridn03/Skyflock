@@ -55,17 +55,15 @@ public class MinibossHp extends Feature {
         int y = Skyflock.config.minibossHealthGui.y;
         int hpPercent = (int) (temp.getHpPercent() * 100);
 
-        int g = (int)(255 * temp.getHpPercent());
-        int r = (int)(255 * (1 - temp.getHpPercent()));
-        Color hpColour = new Color(r, g, 0, 255);
-        Color bgColour = new Color(0, 15, 100, 120);
+        float hue = temp.getHpPercent() * 0.3333f;
+        Color hpColour = Color.getHSBColor(hue, 1f, 1f);
 
         String hpStr = Integer.toString(hpPercent);
         String distanceStr = "Distance: " + Double.parseDouble(String.format("%.1f", temp.entity.getDistanceToEntity(mc.thePlayer)));
 
         int stringWidth = fr.getStringWidth(temp.name + " " + hpStr + "%");
 
-        Gui.drawRect(x, y, x + stringWidth + 35, y + (fr.FONT_HEIGHT * 2) + 25, bgColour.getRGB());
+        Gui.drawRect(x, y, x + stringWidth + 35, y + (fr.FONT_HEIGHT * 2) + 25, Skyflock.config.minibossBgColour.getRGB());
 
         fr.drawString(temp.name, x + 25, y + 10, 0xffffffff);
         fr.drawString(" " + hpStr + "%", x + 25 + fr.getStringWidth(temp.name + " "), y + 10, hpColour.getRGB());

@@ -4,6 +4,7 @@ import gg.essential.vigilance.Vigilant;
 import gg.essential.vigilance.data.Property;
 import gg.essential.vigilance.data.PropertyType;
 
+import java.awt.*;
 import java.io.File;
 
 import static dev.farid.skyflock.Skyflock.printLogs;
@@ -26,7 +27,8 @@ public class SkyflockConfig extends Vigilant {
             type = PropertyType.SWITCH,
             name = "Miniboss Health Display",
             description = "Displays nearby miniboss hp on screen",
-            category = "Dungeons"
+            category = "Dungeons",
+            subcategory = "Miniboss HP"
     )
     public boolean minibossHealthDisplay = false;
 
@@ -34,11 +36,22 @@ public class SkyflockConfig extends Vigilant {
             type = PropertyType.BUTTON,
             name = "Miniboss HP Location",
             description = "Click to move the gui location",
-            category = "Dungeons"
+            placeholder = "Edit Location",
+            category = "Dungeons",
+            subcategory = "Miniboss HP"
     )
     public void setMinibossHealthGui() {
         this.minibossHealthGui.open();
     }
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Background Colour",
+            description = "Miniboss HP hud colour",
+            category = "Dungeons",
+            subcategory = "Miniboss HP"
+    )
+    public Color minibossBgColour = new Color(7, 2, 7, 120);
 
     @Property(
             type = PropertyType.SELECTOR,
@@ -54,6 +67,9 @@ public class SkyflockConfig extends Vigilant {
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();
+
+        addDependency("setMinibossHealthGui", "minibossHealthDisplay");
+        addDependency("minibossBgColour", "minibossHealthDisplay");
 
         printLogs(null, "Config loaded", false);
     }
