@@ -4,14 +4,13 @@ import dev.farid.skyflock.Skyflock;
 import dev.farid.skyflock.features.Feature;
 import dev.farid.skyflock.utils.DungeonUtils;
 import dev.farid.skyflock.utils.RenderUtils;
-import gg.essential.universal.UChat;
+import dev.farid.skyflock.utils.enums.dungeons.DungeonBoss;
+import dev.farid.skyflock.utils.enums.dungeons.DungeonFloor;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -43,6 +42,7 @@ public class LividHelper extends Feature {
         if (!getConfigStatus()) return;
         if (!floorCheck()) return;
 
+        // coloured glass block on the ceiling
         IBlockState blockState = mc.theWorld.getBlockState(new BlockPos(5, 108, 42));
         if (blockState.getProperties().isEmpty())
             return;
@@ -76,7 +76,7 @@ public class LividHelper extends Feature {
         }
 
         // don't render until for a bit until
-        if (System.currentTimeMillis() - this.lastLividFound < 1500L)
+        if (System.currentTimeMillis() - this.lastLividFound < 1450L)
             return;
 
         if (Skyflock.config.pointToCorrectLivid == 1) {
@@ -105,10 +105,10 @@ public class LividHelper extends Feature {
         if (mc.thePlayer == null || mc.theWorld == null)
             return false;
 
-        if (DungeonUtils.currentFloor == null || (!DungeonUtils.currentFloor.equals("F5") && !DungeonUtils.currentFloor.equals("M5")))
+        if (DungeonUtils.currentFloor != DungeonFloor.F5 && DungeonUtils.currentFloor != DungeonFloor.M5)
             return false;
 
-        return DungeonUtils.boss == DungeonUtils.Boss.LIVID;
+        return DungeonUtils.boss == DungeonBoss.LIVID;
     }
 
     private String getLividNameFromColour(EnumDyeColor colour) {
@@ -116,7 +116,7 @@ public class LividHelper extends Feature {
         // From: https://hypixel-skyblock.fandom.com/wiki/Livid#Boss_Minions
         switch (colour) {
             case WHITE:
-                colString = "Vendetta Livid";
+                colString = "Vendetta";
                 break;
 
             case MAGENTA:

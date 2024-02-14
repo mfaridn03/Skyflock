@@ -1,6 +1,7 @@
 package dev.farid.skyflock.utils;
 
-import gg.essential.universal.UChat;
+import dev.farid.skyflock.utils.enums.dungeons.DungeonBoss;
+import dev.farid.skyflock.utils.enums.dungeons.DungeonFloor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -12,8 +13,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DungeonUtils {
 
@@ -27,8 +26,8 @@ public class DungeonUtils {
             "Sadan",
             "Necron"
     );
-    public static String currentFloor = null;
-    public static Boss boss = null;
+    public static DungeonFloor currentFloor = null;
+    public static DungeonBoss boss = null;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -48,7 +47,7 @@ public class DungeonUtils {
         );
 
         if (match != null)
-            currentFloor = (String) match;
+            currentFloor = DungeonFloor.getFloor((String) match);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
@@ -59,8 +58,8 @@ public class DungeonUtils {
         String msg = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
         // m7, hopefully this works (I've never done m7 before)
-        if (msg.startsWith("[BOSS] ") && msg.endsWith("You.. again?") && boss == Boss.NECRON) {
-            boss = Boss.WITHER_KING;
+        if (msg.startsWith("[BOSS] ") && msg.endsWith("You.. again?") && boss == DungeonBoss.NECRON) {
+            boss = DungeonBoss.WITHER_KING;
             return;
         }
 
@@ -72,8 +71,28 @@ public class DungeonUtils {
                     1
             );
             if (match != null) {
-                Boss b = Boss.getBoss((String) match);
-                if (b != null) // nullify boss only on worldLoad event
+                DungeonBoss b = DungeonBoss.getBoss((String) match);
+                if (b == null) // nullify boss only on worldLoad event
+                    return;
+
+                // only set boss if previous boss is null EXCEPT on f/m7
+                if (boss == null)
+                    boss = b;
+
+                // maxor -> storm
+                else if (boss == DungeonBoss.MAXOR && b == DungeonBoss.STORM)
+                    boss = b;
+
+                // storm -> goldor
+                else if (boss == DungeonBoss.STORM && b == DungeonBoss.GOLDOR)
+                    boss = b;
+
+                // goldor -> necron
+                else if (boss == DungeonBoss.GOLDOR && b == DungeonBoss.NECRON)
+                    boss = b;
+
+                // necron -> p5
+                else if (boss == DungeonBoss.NECRON && b == DungeonBoss.WITHER_KING)
                     boss = b;
             }
         }
@@ -82,39 +101,5 @@ public class DungeonUtils {
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         boss = null;
-    }
-
-    public enum Boss {
-
-        BONZO("Bonzo"),
-        SCARF("Scarf"),
-        PROFESSOR("The Professor"),
-        THORN("Thorn"),
-        LIVID("Livid"),
-        SADAN("Sadan"),
-        // f7 stuff
-        MAXOR("Maxor"),
-        STORM("Storm"),
-        GOLDOR("Goldor"),
-        NECRON("Necron"),
-        // No m7 features yet but hopefully this works
-        WITHER_KING("The Wither King");
-        private final String name;
-
-        Boss(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public static Boss getBoss(String name) {
-            for (Boss b : Boss.values()) {
-                if (b.getName().equals(name))
-                    return b;
-            }
-            return null;
-        }
     }
 }

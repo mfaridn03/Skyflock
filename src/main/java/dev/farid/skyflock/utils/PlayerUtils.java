@@ -1,7 +1,6 @@
 package dev.farid.skyflock.utils;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import gg.essential.universal.UChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
