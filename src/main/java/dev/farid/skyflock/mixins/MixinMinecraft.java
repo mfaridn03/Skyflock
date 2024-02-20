@@ -2,6 +2,7 @@ package dev.farid.skyflock.mixins;
 
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,4 +15,5 @@ public class MixinMinecraft {
     private void startGame(CallbackInfo ci) {
         System.out.println("Successfully injected into startGame.");
     }
+
 }

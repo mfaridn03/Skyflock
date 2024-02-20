@@ -1,8 +1,10 @@
 {
-    "compatibilityLevel": "JAVA_8",
-    "package": "dev.farid.skyflock.mixins",
-    "client": [
-        "MixinMinecraft"
-    ],
-    "verbose": true
+  "compatibilityLevel": "JAVA_8",
+  "package": "dev.farid.skyflock.mixins",
+  "client": [
+    "MixinMinecraft",
+    "MixinRendererLivingEntity",
+    "accessors.AccessorMinecraft"
+  ],
+  "verbose": true
 }

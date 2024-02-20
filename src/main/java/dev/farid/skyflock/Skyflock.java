@@ -6,6 +6,7 @@ import dev.farid.skyflock.config.SkyflockConfig;
 import dev.farid.skyflock.features.FeatureManager;
 import dev.farid.skyflock.utils.DungeonUtils;
 import dev.farid.skyflock.utils.LocationUtils;
+import dev.farid.skyflock.utils.SlayerUtils;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
@@ -38,7 +39,8 @@ public class Skyflock {
         registerEvents(
                 this,
                 new LocationUtils(),
-                new DungeonUtils()
+                new DungeonUtils(),
+                new SlayerUtils()
         );
     }
 

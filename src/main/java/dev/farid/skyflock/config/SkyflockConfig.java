@@ -64,12 +64,69 @@ public class SkyflockConfig extends Vigilant {
     )
     public int pointToCorrectLivid = 0;
 
+    // slayer
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Slayer Miniboss ESP",
+            description = "Draws a box/highlight around slayer minibosses.\n" +
+                    "Some slayer quests (especially at higher tiers) can spawn two types of minibosses: " +
+                    "§aNormal§r and §cRare§r minibosses\n\n" +
+                    "§cRare§r miniboss (e.g. Voidcrazed Maniac) give much more combat exp than §aNormal§r ones (e.g. Voidling Radical)",
+            category = "Slayer",
+            subcategory = "Miniboss ESP"
+    )
+    public boolean slayerMinibossEsp = false;
+
+    @Property(
+            type = PropertyType.SELECTOR,
+            name = "ESP type",
+            description = "Hitbox: draws a hitbox. Fill: draws a filled hitbox",
+            category = "Slayer",
+            subcategory = "Miniboss ESP",
+            options = {"Hitbox", "Fill"}
+    )
+    public int slayerMiniEspType = 0;
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Keep Rendering ESP",
+            description = "Keep ESP turned on if you don't have an active slayer quest",
+            category = "Slayer",
+            subcategory = "Miniboss ESP"
+    )
+    public boolean espWhenQuestInactive = false;
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Normal Miniboss Colour",
+            description = "Normal miniboss esp colour",
+            category = "Slayer",
+            subcategory = "Miniboss ESP"
+    )
+    public Color normalMiniColour = new Color(0, 255, 0, 153);
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Rare Miniboss Colour",
+            description = "Rare miniboss esp colour",
+            category = "Slayer",
+            subcategory = "Miniboss ESP"
+    )
+    public Color rareMiniColour = new Color(255, 0, 0, 150);
+
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();
 
+        // dungeons
         addDependency("setMinibossHealthGui", "minibossHealthDisplay");
         addDependency("minibossBgColour", "minibossHealthDisplay");
+
+        // slayer
+        addDependency("espWhenQuestInactive", "slayerMinibossEsp");
+        addDependency("slayerMiniEspType", "slayerMinibossEsp");
+        addDependency("normalMiniColour", "slayerMinibossEsp");
+        addDependency("rareMiniColour", "slayerMinibossEsp");
 
         printLogs(null, "Config loaded", false);
     }

@@ -57,4 +57,50 @@ public class TextUtils {
 
         return null;
     }
+
+    /**
+     * Convert roman numeral string to int. Only 1-5
+     *
+     * @param romanNumeral roman numeral string
+     * @return integer numeral
+     */
+    public static Integer romanToInt(String romanNumeral) {
+        switch (romanNumeral) {
+            case "I":
+                return 1;
+            case "II":
+                return 2;
+            case "III":
+                return 3;
+            case "IV":
+                return 4;
+            case "V":
+                return 5;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Converts integer to roman numeral string
+     *
+     * @param num integer input
+     * @return roman numeral string
+     */
+    public static String intToRoman(int num) {
+        switch (num) {
+            case 1:
+                return "I";
+            case 2:
+                return "II";
+            case 3:
+                return "III";
+            case 4:
+                return "IV";
+            case 5:
+                return "V";
+            default:
+                return null;
+        }
+    }
 }

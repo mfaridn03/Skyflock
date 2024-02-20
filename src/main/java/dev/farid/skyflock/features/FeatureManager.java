@@ -3,6 +3,7 @@ package dev.farid.skyflock.features;
 import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
+import dev.farid.skyflock.features.slayer.MinibossHighlight;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -24,6 +25,9 @@ public class FeatureManager {
         // dungeons
         this.features.add(new MinibossHp());
         this.features.add(new LividHelper());
+
+        // slayer
+        this.features.add(new MinibossHighlight());
     }
 
     public void init() {

@@ -16,16 +16,6 @@ import java.util.List;
 
 public class DungeonUtils {
 
-    private static final Minecraft mc = Minecraft.getMinecraft();
-    private static final List<String> bossNames = Arrays.asList(
-            "Bonzo",
-            "Scarf",
-            "The Professor",
-            "Thorn",
-            "Livid",
-            "Sadan",
-            "Necron"
-    );
     public static DungeonFloor currentFloor = null;
     public static DungeonBoss boss = null;
 
