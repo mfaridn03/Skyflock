@@ -6,5 +6,8 @@
     "MixinRendererLivingEntity",
     "accessors.AccessorMinecraft"
   ],
-  "verbose": true
+  "verbose": true,
+  "mixins": [
+    "MixinNetworkManager"
+  ]
 }

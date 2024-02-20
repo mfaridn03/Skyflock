@@ -1,5 +1,6 @@
 package dev.farid.skyflock.utils;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.farid.skyflock.utils.enums.slayer.SlayerBoss;
 import dev.farid.skyflock.utils.enums.slayer.SlayerMiniboss;
 import dev.farid.skyflock.utils.enums.slayer.SlayerTier;
@@ -8,14 +9,19 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SlayerUtils {
 
     public static SlayerBoss slayerBoss = null;
     public static SlayerTier slayerTier = null;
+    public static EntityArmorStand bossArmorStand = null;
+    public static boolean isFighting = false;
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final String SLAYER_REGEX = "(Revenant Horror|Tarantula Broodfather|Sven Packmaster|Voidgloom Seraph|Riftstalker Bloodfiend|Inferno Demonlord) (I|II|III|IV|V)(?!\\w)";
+    private static final String BLAZE_ATTUNEMENT_REGEX = "(ASHEN|SPIRIT|AURIC|CRYSTAL) ♨.+";
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -24,10 +30,14 @@ public class SlayerUtils {
 
         List<String> scoreboard = PlayerUtils.getScoreboardLines(false);
         Object match = TextUtils.getMatchFromLines(SLAYER_REGEX, scoreboard, null, 0);
+        Object fightingMatch = TextUtils.getMatchFromLines("Slay the boss", scoreboard, null, 0);
+
+        isFighting = fightingMatch != null;
 
         if (match == null) {
             slayerBoss = null;
             slayerTier = null;
+            bossArmorStand = null;
             return;
         }
 
@@ -38,6 +48,30 @@ public class SlayerUtils {
         SlayerTier tier = SlayerTier.getTierFromBossString((String) match);
         if (tier != null)
             slayerTier = tier;
+
+        if (slayerBoss == null)
+            return;
+
+        // get boss armour stand
+        List<EntityArmorStand> stands = mc.theWorld.getEntities(
+                EntityArmorStand.class,
+                e -> {
+                    if (slayerBoss == SlayerBoss.BLAZE) {
+                        // find the emoji and attunement
+                        String n = ChatFormatting.stripFormatting(e.getName());
+                        return isFighting && TextUtils.getMatchFromLines(BLAZE_ATTUNEMENT_REGEX, Collections.singletonList(n), null, 0) != null;
+                    }
+                    else {
+                        return e.getName().contains("Spawned by:") && e.getName().contains(mc.thePlayer.getName());
+                    }
+                }
+        );
+        if (stands.isEmpty()) {
+            bossArmorStand = null;
+            return;
+        }
+        stands.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
+        bossArmorStand = stands.get(0);
     }
 
     public static SlayerMiniboss getMiniboss(EntityArmorStand armorStand) {

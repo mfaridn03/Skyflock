@@ -57,8 +57,7 @@ public class MinibossHighlight extends Feature {
                         this.minibosses.computeIfPresent(e, (k, v) -> null);
                     }
                     // else, add
-                    else
-                    {
+                    else {
                         AxisAlignedBB aabb;
 
                         if (sm.mobClass.isAssignableFrom(EntityEnderman.class)) {
@@ -89,6 +88,11 @@ public class MinibossHighlight extends Feature {
 
         try {
             for (Map.Entry<Entity, Pair<AxisAlignedBB, Color>> entry : this.minibosses.entrySet()) {
+                // TODO: redo how this works
+                // tries to fix error which causes box to be rendered despite entity being dead
+                if (!mc.theWorld.loadedEntityList.contains(entry.getKey()))
+                    continue;
+
                 AxisAlignedBB aabb = entry.getValue().getFirst();
                 Color c = entry.getValue().getSecond();
                 double[] coords = RenderUtils.getEntityRenderCoords(entry.getKey(), event.partialTicks);

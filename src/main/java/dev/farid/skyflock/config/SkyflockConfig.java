@@ -73,7 +73,7 @@ public class SkyflockConfig extends Vigilant {
                     "§aNormal§r and §cRare§r minibosses\n\n" +
                     "§cRare§r miniboss (e.g. Voidcrazed Maniac) give much more combat exp than §aNormal§r ones (e.g. Voidling Radical)",
             category = "Slayer",
-            subcategory = "Miniboss ESP"
+            subcategory = "ESP"
     )
     public boolean slayerMinibossEsp = false;
 
@@ -82,7 +82,7 @@ public class SkyflockConfig extends Vigilant {
             name = "ESP type",
             description = "Hitbox: draws a hitbox. Fill: draws a filled hitbox",
             category = "Slayer",
-            subcategory = "Miniboss ESP",
+            subcategory = "ESP",
             options = {"Hitbox", "Fill"}
     )
     public int slayerMiniEspType = 0;
@@ -92,7 +92,7 @@ public class SkyflockConfig extends Vigilant {
             name = "Keep Rendering ESP",
             description = "Keep ESP turned on if you don't have an active slayer quest",
             category = "Slayer",
-            subcategory = "Miniboss ESP"
+            subcategory = "ESP"
     )
     public boolean espWhenQuestInactive = false;
 
@@ -101,7 +101,7 @@ public class SkyflockConfig extends Vigilant {
             name = "Normal Miniboss Colour",
             description = "Normal miniboss esp colour",
             category = "Slayer",
-            subcategory = "Miniboss ESP"
+            subcategory = "ESP"
     )
     public Color normalMiniColour = new Color(0, 255, 0, 153);
 
@@ -110,9 +110,67 @@ public class SkyflockConfig extends Vigilant {
             name = "Rare Miniboss Colour",
             description = "Rare miniboss esp colour",
             category = "Slayer",
-            subcategory = "Miniboss ESP"
+            subcategory = "ESP"
     )
     public Color rareMiniColour = new Color(255, 0, 0, 150);
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Colour Boss",
+            description = "Draws a solid box around the boss, coloured depending on the correct attunement",
+            category = "Slayer",
+            subcategory = "Blaze Slayer"
+    )
+    public boolean colourBlazeBoss = false;
+
+    @Property(
+            type = PropertyType.PERCENT_SLIDER,
+            name = "Box Transparency",
+            description = "Coloured box transparency, full = 100% solid colour",
+            category = "Slayer",
+            subcategory = "Blaze Slayer"
+    )
+    public float boxTransparency = 0.8f;
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Hide Nearby Blaze",
+            description = "Stop rendering nearby blaze when fighting boss",
+            category = "Slayer",
+            subcategory = "Blaze Slayer"
+    )
+    public boolean hideNearbyBlaze = false;
+
+    @Property(
+            type = PropertyType.SLIDER,
+            name = "Blaze Hider Distance",
+            description = "Blazes further than this will not be hidden if the above setting is turned on",
+            category = "Slayer",
+            subcategory = "Blaze Slayer",
+            min = 1,
+            max = 30
+    )
+    public int blazeHideDistance = 10;
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Hide Nearby Particles",
+            description = "Stop rendering nearby particles when fighting boss",
+            category = "Slayer",
+            subcategory = "Blaze Slayer"
+    )
+    public boolean hideNearbyParticles = false;
+
+    @Property(
+            type = PropertyType.SLIDER,
+            name = "Particle Hider Distance",
+            description = "Particles further than this will not be hidden if the above setting is turned on",
+            category = "Slayer",
+            subcategory = "Blaze Slayer",
+            min = 1,
+            max = 30
+    )
+    public int particleHideDistance = 10;
 
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
@@ -127,6 +185,11 @@ public class SkyflockConfig extends Vigilant {
         addDependency("slayerMiniEspType", "slayerMinibossEsp");
         addDependency("normalMiniColour", "slayerMinibossEsp");
         addDependency("rareMiniColour", "slayerMinibossEsp");
+
+        addDependency("boxTransparency", "colourBlazeBoss");
+
+        addDependency("blazeHideDistance", "hideNearbyBlaze");
+        addDependency("particleHideDistance", "hideNearbyParticles");
 
         printLogs(null, "Config loaded", false);
     }
