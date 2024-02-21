@@ -10,6 +10,8 @@ import dev.farid.skyflock.utils.enums.slayer.SlayerBoss;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class BlazeSlayerFeatures extends Feature {
 
-    private EntityBlaze bossBlaze = null;
+    private EntityCreature bossMobs = null;
 
     public BlazeSlayerFeatures() {
         super("Blaze Slayer Features");
@@ -34,7 +36,7 @@ public class BlazeSlayerFeatures extends Feature {
 
         if (event.entity.getDistanceToEntity(SlayerUtils.bossArmorStand) < Skyflock.config.blazeHideDistance) {
             // blaze mod
-            if (event.entity instanceof EntityBlaze && event.entity != this.bossBlaze) {
+            if (event.entity instanceof EntityBlaze && event.entity != this.bossMobs) {
                 event.setCanceled(true);
                 return;
             }
@@ -64,24 +66,24 @@ public class BlazeSlayerFeatures extends Feature {
         Color c2 = new Color(c1.getRed(), c1.getBlue(), c1.getGreen(), (int) (255 * Skyflock.config.boxTransparency));
 
         // find the closest blaze to armor stand
-        List<EntityCreature> blazes = mc.theWorld.getEntitiesWithinAABB(
+        List<EntityCreature> relevantMobs = mc.theWorld.getEntitiesWithinAABB(
                 EntityCreature.class,
                 SlayerUtils.bossArmorStand.getEntityBoundingBox().expand(1, 1, 1),
-                e -> e instanceof EntityCreature && !e.isDead
+                e -> !e.isDead && (e instanceof EntityBlaze || e instanceof EntitySkeleton || e instanceof EntityPigZombie)
         );
-        if (blazes.isEmpty())
+        if (relevantMobs.isEmpty())
             return;
 
-        blazes.sort(Comparator.comparingDouble(e -> e.getDistance(
+        relevantMobs.sort(Comparator.comparingDouble(e -> e.getDistance(
                 SlayerUtils.bossArmorStand.posX,
                 SlayerUtils.bossArmorStand.posY - 2.2,
                 SlayerUtils.bossArmorStand.posZ
         )));
 
-        this.bossBlaze = (EntityBlaze) blazes.get(0);
+        this.bossMobs = relevantMobs.get(0);
 
         RenderUtils.Render3D.drawFilledBoundingBox(
-                RenderUtils.getEntityRenderAABB(this.bossBlaze, event.partialTicks).expand(0.26, 0.2, 0.26),
+                RenderUtils.getEntityRenderAABB(this.bossMobs, event.partialTicks).expand(0.3, 0.2, 0.3),
                 c2,
                 event.partialTicks
         );
