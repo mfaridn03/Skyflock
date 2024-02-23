@@ -84,6 +84,7 @@ public class LividHelper extends Feature {
                     this.correctLivid,
                     this.lividColour,
                     6f,
+                    2.2,
                     event.partialTicks
             );
         }

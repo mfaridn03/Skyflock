@@ -102,7 +102,7 @@ public class RenderUtils {
             GlStateManager.popMatrix();
         }
 
-        public static void drawArrowToEntity(Entity entityIn, Color colour, float thickness, float partialTicks) {
+        public static void drawArrowToEntity(Entity entityIn, Color colour, float thickness, double distance, float partialTicks) {
             if (entityIn == null || mc.thePlayer == null)
                 return;
 
@@ -117,7 +117,7 @@ public class RenderUtils {
             double rightX = renderX + (0.3 * Math.cos(yawRadians));
             double rightZ = renderZ + (0.3 * Math.sin(yawRadians));
 
-            double[] entXZ = normalisedEntityCoords(entityIn, renderX, renderZ, partialTicks);
+            double[] entXZ = normalisedEntityCoords(entityIn, renderX, renderZ, distance, partialTicks);
             Render3D.drawLines(
                     Arrays.asList(
                             new Vec3(leftX, renderY + 0.5, leftZ),
@@ -261,7 +261,7 @@ public class RenderUtils {
         return new double[] {x, y, z};
     }
 
-    private static double[] normalisedEntityCoords(Entity entityIn, double renderX, double renderZ, float partialTicks) {
+    private static double[] normalisedEntityCoords(Entity entityIn, double renderX, double renderZ, double distance, float partialTicks) {
         double entityX = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * partialTicks;
         double entityZ = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
 
@@ -269,7 +269,7 @@ public class RenderUtils {
         double dZ = entityZ - renderZ;
         float d = (float) Math.sqrt(dX * dX + dZ * dZ);
 
-        // returns x z coords of entity, normalised to 2 block away from player
-        return new double[]{renderX + (dX / d) * 2, renderZ + (dZ / d) * 2};
+        // returns x z coords of entity, normalised to `distance` blocks away from player
+        return new double[]{renderX + (dX / d) * distance, renderZ + (dZ / d) * distance};
     }
 }

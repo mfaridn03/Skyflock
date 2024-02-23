@@ -126,7 +126,6 @@ public class SkyflockConfig extends Vigilant {
     @Property(
             type = PropertyType.PERCENT_SLIDER,
             name = "Box Transparency",
-            description = "Coloured box transparency, full = 100% solid colour",
             category = "Slayer",
             subcategory = "Blaze Slayer"
     )
@@ -172,6 +171,33 @@ public class SkyflockConfig extends Vigilant {
     )
     public int particleHideDistance = 10;
 
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Point To Boss",
+            description = "Draws an arrow to your boss",
+            category = "Slayer",
+            subcategory = "Pointer"
+    )
+    public boolean pointToBoss = false;
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Arrow Colour",
+            category = "Slayer",
+            subcategory = "Pointer"
+    )
+    public Color bossPointerColour = new Color(255, 255, 255, 153);
+
+    @Property(
+            type = PropertyType.DECIMAL_SLIDER,
+            name = "Arrow Thickness",
+            category = "Slayer",
+            subcategory = "Pointer",
+            minF = 0.5f,
+            maxF = 5f
+    )
+    public float bossPointerThickness = 3f;
+
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();
@@ -190,6 +216,9 @@ public class SkyflockConfig extends Vigilant {
 
         addDependency("blazeHideDistance", "hideNearbyBlaze");
         addDependency("particleHideDistance", "hideNearbyParticles");
+
+        addDependency("bossPointerColour", "pointToBoss");
+        addDependency("bossPointerThickness", "pointToBoss");
 
         printLogs(null, "Config loaded", false);
     }

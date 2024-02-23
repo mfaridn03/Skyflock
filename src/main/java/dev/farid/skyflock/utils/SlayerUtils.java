@@ -53,11 +53,16 @@ public class SlayerUtils {
             return;
 
         // get boss armour stand
+        if (!isFighting) {
+            bossArmorStand = null;
+            return;
+        }
         List<EntityArmorStand> stands = mc.theWorld.getEntities(
                 EntityArmorStand.class,
                 e -> {
                     if (slayerBoss == SlayerBoss.BLAZE) {
                         // find the emoji and attunement
+                        // buggy if the boss spawns when you die/far away
                         String n = ChatFormatting.stripFormatting(e.getName());
                         return isFighting && TextUtils.getMatchFromLines(BLAZE_ATTUNEMENT_REGEX, Collections.singletonList(n), null, 0) != null;
                     }
@@ -70,7 +75,9 @@ public class SlayerUtils {
             bossArmorStand = null;
             return;
         }
-        stands.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
+        if (stands.size() > 1)
+            stands.sort(Comparator.comparingDouble(e -> e.getDistanceToEntity(mc.thePlayer)));
+
         bossArmorStand = stands.get(0);
     }
 

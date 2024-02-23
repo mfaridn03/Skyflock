@@ -3,6 +3,7 @@ package dev.farid.skyflock.features;
 import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
+import dev.farid.skyflock.features.slayer.ArrowToBoss;
 import dev.farid.skyflock.features.slayer.BlazeSlayerFeatures;
 import dev.farid.skyflock.features.slayer.MinibossHighlight;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +31,7 @@ public class FeatureManager {
         // slayer
         this.features.add(new MinibossHighlight());
         this.features.add(new BlazeSlayerFeatures());
+        this.features.add(new ArrowToBoss());
     }
 
     public void init() {
