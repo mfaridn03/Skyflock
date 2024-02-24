@@ -11,11 +11,13 @@
 - Livid Boss Tracker
 
     - Draws an arrow or tracer pointing to the correct livid boss
+      
     ![](https://i.imgur.com/PYYccoL.png)
 
 - Miniboss Health Display
 
     - Displays the health of nearest dungeon miniboss
+      
     ![](https://i.imgur.com/KVUzoN7.png)
 
 ### Slayer
@@ -48,7 +50,7 @@
 - Auto Wave
 
     - Sends `o/` in chat whenever someone joins the party
-    - 
+
     ![](https://i.imgur.com/hu4ksVN.png)
 
 ### And more to come!
