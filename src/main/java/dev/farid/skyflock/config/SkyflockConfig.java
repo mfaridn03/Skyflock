@@ -198,6 +198,16 @@ public class SkyflockConfig extends Vigilant {
     )
     public float bossPointerThickness = 3f;
 
+    // misc
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Auto Wave",
+            description = "Sends 'o/' in chat whenever someone joins your party",
+            category = "Fun",
+            subcategory = "Party"
+    )
+    public boolean autoWave = false;
+
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();
