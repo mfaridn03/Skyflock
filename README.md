@@ -42,12 +42,13 @@
 ### QOL
 - No Death Animation
 
-    - Mobs disappear as soon as it dies
+    - Mobs disappear as soon as they die
 
 ### Fun
 - Auto Wave
 
     - Sends `o/` in chat whenever someone joins the party
+    - 
     ![](https://i.imgur.com/hu4ksVN.png)
 
 ### And more to come!
