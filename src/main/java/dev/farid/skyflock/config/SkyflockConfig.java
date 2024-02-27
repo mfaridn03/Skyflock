@@ -203,10 +203,21 @@ public class SkyflockConfig extends Vigilant {
             type = PropertyType.SWITCH,
             name = "Auto Wave",
             description = "Sends 'o/' in chat whenever someone joins your party",
-            category = "Fun",
+            category = "Misc",
             subcategory = "Party"
     )
     public boolean autoWave = false;
+
+    @Property(
+            type = PropertyType.SELECTOR,
+            name = "Hide Fire Sale",
+            description = "Hide fire sale messages",
+            category = "Misc",
+            subcategory = "Chat",
+            options = {"Disabled", "Hide Completely", "Shorten"}
+    )
+    public int hideFireSale = 0;
+
 
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));

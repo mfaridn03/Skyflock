@@ -3,6 +3,7 @@ package dev.farid.skyflock.features;
 import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
 import dev.farid.skyflock.features.misc.AutoWave;
+import dev.farid.skyflock.features.misc.HideFireSale;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
 import dev.farid.skyflock.features.slayer.ArrowToBoss;
 import dev.farid.skyflock.features.slayer.BlazeSlayerFeatures;
@@ -36,6 +37,7 @@ public class FeatureManager {
 
         // fun
         this.features.add(new AutoWave());
+        this.features.add(new HideFireSale());
     }
 
     public void init() {
