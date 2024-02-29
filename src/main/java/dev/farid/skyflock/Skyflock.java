@@ -12,6 +12,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,7 @@ public class Skyflock {
     public static final String MODID = "skyflock";
     public static final String MODNAME = "Skyflock";
     public static final String VERSION = "1.0.0";
+    public static final String CHAT_PREFIX = "[&6SkyFlock&r] ";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final CommandManager commandManager = new CommandManager();
     public static final FeatureManager featureManager = new FeatureManager();
@@ -44,6 +46,14 @@ public class Skyflock {
         );
     }
 
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        // clear carried player list upon start
+        SlayerUtils.carriedPlayers.clear();
+        config.carriedPlayers = "";
+        forceSaveConfig();
+    }
+
     public void registerEvents(Object... objects) {
         for (Object o : objects) {
             MinecraftForge.EVENT_BUS.register(o);
@@ -62,5 +72,10 @@ public class Skyflock {
             }
         }
         LOGGER.info(realMessage);
+    }
+
+    public static void forceSaveConfig() {
+        config.markDirty();
+        config.writeData();
     }
 }

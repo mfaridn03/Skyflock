@@ -7,6 +7,7 @@ import dev.farid.skyflock.features.misc.HideFireSale;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
 import dev.farid.skyflock.features.slayer.ArrowToBoss;
 import dev.farid.skyflock.features.slayer.BlazeSlayerFeatures;
+import dev.farid.skyflock.features.slayer.CarryHelper;
 import dev.farid.skyflock.features.slayer.MinibossHighlight;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,6 +35,7 @@ public class FeatureManager {
         this.features.add(new MinibossHighlight());
         this.features.add(new BlazeSlayerFeatures());
         this.features.add(new ArrowToBoss());
+        this.features.add(new CarryHelper());
 
         // fun
         this.features.add(new AutoWave());

@@ -198,6 +198,47 @@ public class SkyflockConfig extends Vigilant {
     )
     public float bossPointerThickness = 3f;
 
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Highlight Carried",
+            description = "Highlight players that you are carrying. To configure carries, run the §a/sfcarry§r command\n\n" +
+                    "    §a/sfcarry §2add §f<players>§r - Add a player or multiple players\n" +
+                    "    §a/sfcarry §2remove §f<players>§r - Remove a player or multiple players\n" +
+                    "    §a/sfcarry §2list§r - Shows the list of people being carried\n" +
+                    "    §a/sfcarry §2clear§r - Clears the carry list\n\n" +
+                    "Separate players by space when adding multiple names.\n" +
+                    "NOTE: player names are §ccase-sensitive!§r Make sure the capitalisation is correct",
+            category = "Slayer",
+            subcategory = "Carry Helper"
+    )
+    public boolean highlightCarried = false;
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Carry Box Colour",
+            description = "Carried player esp colour",
+            category = "Slayer",
+            subcategory = "Carry Helper"
+    )
+    public Color carryBoxColour = new Color(0, 255, 0, 255);
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Carry Name Colour",
+            description = "Carried player nametag colour",
+            category = "Slayer",
+            subcategory = "Carry Helper"
+    )
+    public Color carryNametagColour = new Color(255, 255, 255, 255);
+
+    @Property(
+            type = PropertyType.PARAGRAPH,
+            name = "Carried Players",
+            category = "Hidden",
+            subcategory = "Carry Helper"
+    )
+    public String carriedPlayers = "";
+
     // misc
     @Property(
             type = PropertyType.SWITCH,
@@ -223,6 +264,9 @@ public class SkyflockConfig extends Vigilant {
         super(new File("./config/skyflock.toml"));
         initialize();
 
+        // hidden properties
+        hidePropertyIf("carriedPlayers", () -> true);
+
         // dungeons
         addDependency("setMinibossHealthGui", "minibossHealthDisplay");
         addDependency("minibossBgColour", "minibossHealthDisplay");
@@ -240,6 +284,9 @@ public class SkyflockConfig extends Vigilant {
 
         addDependency("bossPointerColour", "pointToBoss");
         addDependency("bossPointerThickness", "pointToBoss");
+
+        addDependency("carryBoxColour", "highlightCarried");
+        addDependency("carryNametagColour", "highlightCarried");
 
         printLogs(null, "Config loaded", false);
     }

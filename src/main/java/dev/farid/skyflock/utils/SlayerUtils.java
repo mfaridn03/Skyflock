@@ -9,6 +9,7 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -19,6 +20,7 @@ public class SlayerUtils {
     public static SlayerTier slayerTier = null;
     public static EntityArmorStand bossArmorStand = null;
     public static boolean isFighting = false;
+    public static List<String> carriedPlayers = new ArrayList<>();
     private static final Minecraft mc = Minecraft.getMinecraft();
     private static final String SLAYER_REGEX = "(Revenant Horror|Tarantula Broodfather|Sven Packmaster|Voidgloom Seraph|Riftstalker Bloodfiend|Inferno Demonlord) (I|II|III|IV|V)(?!\\w)";
     private static final String BLAZE_ATTUNEMENT_REGEX = "(ASHEN|SPIRIT|AURIC|CRYSTAL) ♨.+";
@@ -83,5 +85,13 @@ public class SlayerUtils {
 
     public static SlayerMiniboss getMiniboss(EntityArmorStand armorStand) {
         return SlayerMiniboss.getMiniboss(armorStand.getName());
+    }
+
+    public static void addCarry(String name) {
+        carriedPlayers.add(name);
+    }
+
+    public static void removeCarry(String name) {
+        carriedPlayers.remove(name);
     }
 }

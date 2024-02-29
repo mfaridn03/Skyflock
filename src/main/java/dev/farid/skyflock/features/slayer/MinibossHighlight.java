@@ -15,6 +15,7 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -95,14 +96,14 @@ public class MinibossHighlight extends Feature {
 
                 AxisAlignedBB aabb = entry.getValue().getFirst();
                 Color c = entry.getValue().getSecond();
-                double[] coords = RenderUtils.getEntityRenderCoords(entry.getKey(), event.partialTicks);
+                Vec3 coords = RenderUtils.getEntityRenderCoords(entry.getKey(), event.partialTicks);
 
                 if (Skyflock.config.slayerMiniEspType == 0) {
                     Color noAlpha = new Color(c.getRed(), c.getGreen(), c.getBlue(), 255);
-                    RenderUtils.Render3D.drawOutlinedBoundingBox(aabb.offset(coords[0], coords[1], coords[2]), noAlpha, 3f, event.partialTicks);
+                    RenderUtils.Render3D.drawOutlinedBoundingBox(aabb.offset(coords.xCoord, coords.yCoord, coords.zCoord), noAlpha, 3f, event.partialTicks, false);
                 }
                 else
-                    RenderUtils.Render3D.drawFilledBoundingBox(aabb.offset(coords[0], coords[1], coords[2]), c, event.partialTicks);
+                    RenderUtils.Render3D.drawFilledBoundingBox(aabb.offset(coords.xCoord, coords.yCoord, coords.zCoord), c, event.partialTicks, false);
             }
         } catch (ConcurrentModificationException ignored) {}
     }

@@ -1,6 +1,7 @@
 package dev.farid.skyflock.utils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
@@ -132,7 +133,7 @@ public class RenderUtils {
         }
 
         // https://github.com/Moulberry/NotEnoughUpdates/blob/master/src/main/java/io/github/moulberry/notenoughupdates/miscfeatures/CustomItemEffects.java
-        public static void drawFilledBoundingBox(AxisAlignedBB aabb, Color c, float partialTicks) {
+        public static void drawFilledBoundingBox(AxisAlignedBB aabb, Color c, float partialTicks, boolean phase) {
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             Entity renderEntity = mc.thePlayer;
@@ -146,6 +147,9 @@ public class RenderUtils {
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.disableTexture2D();
+
+            if (phase)
+                GlStateManager.disableDepth();
 
             GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
 
@@ -162,7 +166,6 @@ public class RenderUtils {
             worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
             worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
             tessellator.draw();
-
 
             GlStateManager.color(c.getRed() / 255f * 0.8f, c.getGreen() / 255f * 0.8f, c.getBlue() / 255f * 0.8f, c.getAlpha() / 255f);
 
@@ -194,17 +197,21 @@ public class RenderUtils {
             worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
             worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
             tessellator.draw();
+
+            if (phase)
+                GlStateManager.disableDepth();
+
             GlStateManager.enableTexture2D();
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
         }
-        public static void drawFilledBoundingBox(Entity entityIn, Color c, float partialTicks) {
+        public static void drawFilledBoundingBox(Entity entityIn, Color c, float partialTicks, boolean phase) {
             AxisAlignedBB aabb = getEntityRenderAABB(entityIn, partialTicks);
-            drawFilledBoundingBox(aabb, c, partialTicks);
+            drawFilledBoundingBox(aabb, c, partialTicks, phase);
         }
 
         // https://github.com/Skytils/SkytilsMod/blob/1.x/src/main/kotlin/gg/skytils/skytilsmod/utils/RenderUtil.kt
-        public static void drawOutlinedBoundingBox(AxisAlignedBB aabb, Color c, float width, float partialTicks) {
+        public static void drawOutlinedBoundingBox(AxisAlignedBB aabb, Color c, float width, float partialTicks, boolean phase) {
             Entity renderEntity = mc.getRenderViewEntity();
 
             double realX = renderEntity.lastTickPosX + (renderEntity.posX - renderEntity.lastTickPosX) * partialTicks;
@@ -220,6 +227,9 @@ public class RenderUtils {
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GL11.glLineWidth(width);
 
+            if (phase)
+                GlStateManager.disableDepth();
+
             RenderGlobal.drawOutlinedBoundingBox(aabb, c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 
             GlStateManager.translate(realX, realY, realZ);
@@ -228,12 +238,65 @@ public class RenderUtils {
             GlStateManager.enableLighting();
             GlStateManager.enableTexture2D();
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+
+            if (phase)
+                GlStateManager.disableDepth();
+
             GlStateManager.popMatrix();
 
         }
-        public static void drawOutlinedBoundingBox(Entity entityIn, Color c, float width, float partialTicks) {
+        public static void drawOutlinedBoundingBox(Entity entityIn, Color c, float width, float partialTicks, boolean phase) {
             AxisAlignedBB aabb = getEntityRenderAABB(entityIn, partialTicks);
-            drawOutlinedBoundingBox(aabb, c, width, partialTicks);
+            drawOutlinedBoundingBox(aabb, c, width, partialTicks, phase);
+        }
+
+        // https://github.com/ChatTriggers/ChatTriggers/blob/master/src/main/kotlin/com/chattriggers/ctjs/minecraft/libs/Tessellator.kt
+        public static void drawString(String text, Vec3 vec3, Color colour, float scale, boolean increase, float partialTicks, boolean phase) {
+            if (mc.thePlayer == null) return;
+
+            FontRenderer fr = mc.fontRendererObj;
+            Vec3 p = getEntityRenderCoords(mc.thePlayer, partialTicks);
+
+            double x = vec3.xCoord - p.xCoord;
+            double y = vec3.yCoord - p.yCoord;
+            double z = vec3.zCoord - p.zCoord;
+
+            float lScale = scale;
+
+            if (increase) {
+                double dist = Math.sqrt(x * x + y * y + z * z);
+                double multiplier = dist / 120;
+                lScale *= 0.45f * (float) multiplier;
+            }
+
+            int xMult = mc.gameSettings.thirdPersonView == 2 ? -1 : 1;
+
+            GlStateManager.color(1f, 1f, 1f, 0.5f);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y, z);
+            GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0f, 1f, 0f);
+            GlStateManager.rotate(mc.getRenderManager().playerViewX * xMult, 1f, 0f, 0f);
+            GlStateManager.scale(-lScale, -lScale, -lScale);
+            GlStateManager.disableLighting();
+
+            if (phase) {
+                GlStateManager.depthMask(false);
+                GlStateManager.disableDepth();
+            }
+
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(770, 771);
+
+            float textWidth = fr.getStringWidth(text);
+            fr.drawString(text, -textWidth / 2, 0f, colour.getRGB(), false);
+
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+
+            if (phase) {
+                GlStateManager.depthMask(true);
+                GlStateManager.enableDepth();
+            }
+            GlStateManager.popMatrix();
         }
     }
 
@@ -254,11 +317,11 @@ public class RenderUtils {
         );
     }
 
-    public static double[] getEntityRenderCoords(Entity entityIn, float partialTicks) {
+    public static Vec3 getEntityRenderCoords(Entity entityIn, float partialTicks) {
         double x = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * partialTicks;
         double y = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * partialTicks;
         double z = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * partialTicks;
-        return new double[] {x, y, z};
+        return new Vec3(x, y, z);
     }
 
     private static double[] normalisedEntityCoords(Entity entityIn, double renderX, double renderZ, double distance, float partialTicks) {

@@ -59,7 +59,8 @@ public class BlazeSlayerFeatures extends Feature {
         RenderUtils.Render3D.drawFilledBoundingBox(
                 RenderUtils.getEntityRenderAABB(this.bossMobs, event.partialTicks).expand(0.28, 0.3, 0.28),
                 this.bossColour,
-                event.partialTicks
+                event.partialTicks,
+                false
         );
     }
 
