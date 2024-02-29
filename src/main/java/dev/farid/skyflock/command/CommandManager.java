@@ -5,6 +5,7 @@ import dev.farid.skyflock.command.commands.ConfigCommandAlias;
 import dev.farid.skyflock.command.commands.SlayerCarryCommand;
 import gg.essential.api.EssentialAPI;
 import gg.essential.api.commands.Command;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class CommandManager {
     public void init() {
         for (Command cmd : this.commands) {
             EssentialAPI.getCommandRegistry().registerCommand(cmd);
+            MinecraftForge.EVENT_BUS.register(cmd);
         }
     }
 }

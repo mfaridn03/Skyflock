@@ -1,12 +1,18 @@
 package dev.farid.skyflock.command.commands;
 
 import dev.farid.skyflock.Skyflock;
+import dev.farid.skyflock.events.PacketEvent;
 import dev.farid.skyflock.utils.SlayerUtils;
 import gg.essential.api.commands.*;
 import gg.essential.universal.UChat;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.client.C14PacketTabComplete;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SlayerCarryCommand extends Command {
 
@@ -22,12 +28,12 @@ public class SlayerCarryCommand extends Command {
                 "§2/sfcarry §3list§r - shows the list of carried players");
     }
 
-    @SubCommand(value = "add", description = "Add a player to the carry list. Separate by spaces")
+    @SubCommand(value = "add", description = "Add player(s) to the carry list. Separate names by space")
     public void sAdd(@Greedy @DisplayName("playerNames") String playerNames) {
         editList(playerNames.split(" "), 1);
     }
 
-    @SubCommand(value = "remove", description = "Removes a player from carry list")
+    @SubCommand(value = "remove", description = "Removes player(s) from carry list. Separate names by space")
     public void sRemove(@Greedy @DisplayName("playerNames") String playerNames) {
         editList(playerNames.split(" "), 0);
     }
@@ -90,5 +96,25 @@ public class SlayerCarryCommand extends Command {
             empty.add(s);
         }
         return empty;
+    }
+
+    @SubscribeEvent
+    public void onPacketOut(PacketEvent.Outgoing event) {
+        if (event.packet instanceof C14PacketTabComplete && Skyflock.config.highlightCarried) {
+            C14PacketTabComplete p = (C14PacketTabComplete) event.packet;
+
+            // lazy player tab completion lol
+            Pattern pattern = Pattern.compile("^/sfcarry (add|remove)(.+)");
+            Matcher matcher = pattern.matcher(p.getMessage());
+
+            if (matcher.matches() && matcher.groupCount() == 2) {
+                String cont = matcher.group(2);
+
+                // instead of modifying incoming packet, spoof outgoing packet so that it returns a list of
+                // valid players by pretending to auto complete /wdr command
+                event.setCanceled(true);
+                Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C14PacketTabComplete("/wdr" + cont));
+            }
+        }
     }
 }

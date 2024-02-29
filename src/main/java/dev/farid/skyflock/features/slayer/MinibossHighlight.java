@@ -42,7 +42,7 @@ public class MinibossHighlight extends Feature {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         if (!getConfigStatus()) return;
-        if (SlayerUtils.slayerBoss == null || !LocationUtils.inSkyblock || mc.theWorld == null)
+        if ((SlayerUtils.slayerBoss == null && !Skyflock.config.espWhenQuestInactive) || !LocationUtils.inSkyblock || mc.theWorld == null)
             return;
 
         mc.theWorld.getEntities(
