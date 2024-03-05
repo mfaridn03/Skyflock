@@ -3,10 +3,12 @@ package dev.farid.skyflock.command.commands;
 import dev.farid.skyflock.Skyflock;
 import dev.farid.skyflock.events.PacketEvent;
 import dev.farid.skyflock.utils.SlayerUtils;
+import dev.farid.skyflock.utils.TextUtils;
 import gg.essential.api.commands.*;
 import gg.essential.universal.UChat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.C14PacketTabComplete;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class SlayerCarryCommand extends Command {
 
     @SubCommand(value = "clear", description = "Clears the carried players list")
     public void sClear() {
+        if (SlayerUtils.carriedPlayers.isEmpty()) return;
+
         SlayerUtils.carriedPlayers.clear();
         Skyflock.config.carriedPlayers = "";
         Skyflock.forceSaveConfig();
@@ -58,19 +62,20 @@ public class SlayerCarryCommand extends Command {
         List<String> modified = new ArrayList<>();
 
         for (String p : playersToProcess) {
-            if (p.isEmpty()) continue;
+            String cleanName = TextUtils.removeUnicode(p);
+            if (cleanName.isEmpty()) continue;
 
             if (mode == 1) {
-                if (currentPlayers.stream().noneMatch(entry -> entry.equalsIgnoreCase(p))) {
-                    modified.add(p);
-                    SlayerUtils.addCarry(p);
-                    currentPlayers.add(p);
+                if (currentPlayers.stream().noneMatch(entry -> entry.equalsIgnoreCase(cleanName))) {
+                    modified.add(cleanName);
+                    SlayerUtils.addCarry(cleanName);
+                    currentPlayers.add(cleanName);
                 }
             }
 
             else if (mode == 0) {
                 currentPlayers.removeIf(entry -> {
-                    if (entry.equalsIgnoreCase(p)) {
+                    if (entry.equalsIgnoreCase(cleanName)) {
                         modified.add(entry);
                         SlayerUtils.removeCarry(entry);
                         return true;
@@ -96,6 +101,23 @@ public class SlayerCarryCommand extends Command {
             empty.add(s);
         }
         return empty;
+    }
+
+    @SubscribeEvent
+    public void onChat(ClientChatReceivedEvent event) {
+        if (!Skyflock.config.clearOnDisband) return;
+
+        String formatted = event.message.getFormattedText();
+        if (formatted.matches(".+§r§ehas disbanded the party!§r") || formatted.matches("§cThe party was disbanded because all invites expired and the party was empty\\.§r")) {
+            new Thread(() -> {
+                try {
+                    // wait slight delay so it doesn't mess up chat
+                    Thread.sleep(50);
+                }
+                catch (InterruptedException ignored) {}
+                sClear();
+            }).start();
+        }
     }
 
     @SubscribeEvent

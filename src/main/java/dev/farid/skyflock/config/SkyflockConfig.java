@@ -214,6 +214,15 @@ public class SkyflockConfig extends Vigilant {
     public boolean highlightCarried = false;
 
     @Property(
+            type = PropertyType.SWITCH,
+            name = "Clear on Disband",
+            description = "Clears carry list when party is disbanded",
+            category = "Slayer",
+            subcategory = "Carry Helper"
+    )
+    public boolean clearOnDisband = false;
+
+    @Property(
             type = PropertyType.COLOR,
             name = "Carry Box Colour",
             description = "Carried player esp colour",
