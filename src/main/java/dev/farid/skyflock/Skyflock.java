@@ -2,6 +2,7 @@ package dev.farid.skyflock;
 
 
 import dev.farid.skyflock.command.CommandManager;
+import dev.farid.skyflock.config.KeybindManager;
 import dev.farid.skyflock.config.SkyflockConfig;
 import dev.farid.skyflock.features.FeatureManager;
 import dev.farid.skyflock.utils.DungeonUtils;
@@ -26,6 +27,7 @@ public class Skyflock {
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static final CommandManager commandManager = new CommandManager();
     public static final FeatureManager featureManager = new FeatureManager();
+    public static final KeybindManager keybindManager = new KeybindManager();
     public static SkyflockConfig config;
 
     @Mod.Instance(MODID)
@@ -37,6 +39,7 @@ public class Skyflock {
 
         featureManager.init();
         commandManager.init();
+        keybindManager.init();
 
         registerEvents(
                 this,

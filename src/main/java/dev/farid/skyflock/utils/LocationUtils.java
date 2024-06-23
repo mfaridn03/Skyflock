@@ -6,16 +6,25 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.List;
+
 public class LocationUtils {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static boolean inSkyblock = false;
     public static boolean inDungeons = false;
+    public static String location = null;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         inSkyblock = checkSkyblock();
         inDungeons = inSkyblock && checkDungeons();
+
+        if (!inSkyblock)
+            location = null;
+        else
+            location = getLocation();
+
     }
 
     private boolean checkSkyblock() {
@@ -39,5 +48,18 @@ public class LocationUtils {
                 0
         );
         return match != null;
+    }
+
+    private String getLocation() {
+        List<String> lines = PlayerUtils.getScoreboardLines(true);
+        if (lines != null) {
+            for (String line : lines) {
+                if (line.contains("⏣")) {
+                    line =  TextUtils.removeUnicode(ChatFormatting.stripFormatting(line));
+                    return line.trim();
+                }
+            }
+        }
+        return "wassa!";
     }
 }
