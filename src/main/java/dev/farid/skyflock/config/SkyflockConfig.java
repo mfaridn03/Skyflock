@@ -318,6 +318,32 @@ public class SkyflockConfig extends Vigilant {
     )
     public boolean golemStage5Warning = false;
 
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Highlight Golem Location",
+            description = "Highlight area where the golem will spawn at",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public boolean highlightGolemLocation = false;
+
+    @Property(
+            type = PropertyType.COLOR,
+            name = "Golem Location Colour",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public Color golemLocationColour = new Color(0, 150, 0, 180);
+
+    @Property(
+            type = PropertyType.SELECTOR,
+            name = "Golem Location Highlight Type",
+            category = "Beastiary",
+            subcategory = "Endstone Protector",
+            options = {"Outline", "Filled"}
+    )
+    public int golemHighlightType = 0;
+
 
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
@@ -350,6 +376,14 @@ public class SkyflockConfig extends Vigilant {
         // beastiary
         addDependency("setGolemScannerGui", "toggleGolems");
         addDependency("golemScanNestOnly", "toggleGolems");
+        addDependency("golemStage4Warning", "toggleGolems");
+        addDependency("golemStage5Warning", "toggleGolems");
+        addDependency("highlightGolemLocation", "toggleGolems");
+        addDependency("golemLocationColour", "toggleGolems");
+        addDependency("golemHighlightType", "toggleGolems");
+
+        addDependency("golemLocationColour", "highlightGolemLocation");
+        addDependency("golemHighlightType", "highlightGolemLocation");
 
         printLogs(null, "Config loaded", false);
     }

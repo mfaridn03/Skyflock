@@ -78,7 +78,7 @@ public class MoveLocationGui extends GuiScreen {
             e.printStackTrace();
         }
 
-        printLogs(null, "Saved Gui location at " + SAVE_FILE_PATH +  "[" + this.name + "]", false);
+        printLogs(null, "Saved Gui location at " + SAVE_FILE_PATH + "[" + this.name + "]", false);
     }
 
     private void load() {
@@ -104,7 +104,7 @@ public class MoveLocationGui extends GuiScreen {
             e.printStackTrace();
         }
 
-        printLogs(null, "Loaded Gui location at " + SAVE_FILE_PATH +  "[" + this.name + "]", false);
+        printLogs(null, "Loaded Gui location at " + SAVE_FILE_PATH + "[" + this.name + "]", false);
     }
 
     public void setLocations(int x, int y) {

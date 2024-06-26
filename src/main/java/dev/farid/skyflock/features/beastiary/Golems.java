@@ -9,10 +9,13 @@ import kotlin.Triple;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -25,7 +28,8 @@ public class Golems extends Feature {
 
     private int stage = -1; // 0 = not found, 1234 = stages, 5 = spawning, 6 = fighting, -1 = reset
     private int index = 0;
-    private long spawnTime = -1;
+    private int locationX = -1;
+    private int locationZ = -1;
     private long lastDeadTime = -1;
     private boolean stopScanning = false;
     private final List<Triple<Integer, Integer, String>> xzLocations = Arrays.asList(
@@ -53,9 +57,10 @@ public class Golems extends Feature {
 
     public void reset() {
         this.stage = -1;
-        this.spawnTime = -1L;
         this.stopScanning = false;
         this.location = null;
+        this.locationX = -1;
+        this.locationZ = -1;
 
         // default values
         this.scanStatus.put("Front", -1);
@@ -74,8 +79,7 @@ public class Golems extends Feature {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         // scanner
-        if (!LocationUtils.inSkyblock || !getConfigStatus()) return;
-        if (!inEnd()) return;
+        if (!getConfigStatus() || !inEnd()) return;
         if (this.stopScanning || System.currentTimeMillis() - this.lastDeadTime < 2000) return;
 
         // scan one location per tick
@@ -99,6 +103,8 @@ public class Golems extends Feature {
                 this.stage = y - 4;
                 this.stopScanning = true;
                 this.location = "§a" + area;
+                this.locationX = x;
+                this.locationZ = z;
 
                 // TODO: display title & play sound option
                 if (Skyflock.config.golemStage4Warning && (this.stage == 4 || this.stage == 5))
@@ -120,6 +126,8 @@ public class Golems extends Feature {
             this.stage = 6;
             this.stopScanning = true;
             this.location = "§a" + trueArea;
+            this.locationX = x;
+            this.locationZ = z;
 
             if (Skyflock.config.golemStage5Warning)
                 RenderUtils.Render2D.showTitle("§cFight Started!", area, 1, 30, 1);
@@ -132,6 +140,8 @@ public class Golems extends Feature {
             this.stopScanning = true;
             this.stage = 0;
             this.location = "§7Dead";
+            this.locationX = -1;
+            this.locationZ = -1;
         }
     }
 
@@ -158,7 +168,6 @@ public class Golems extends Feature {
 
             // stage 5 message
             case "The ground begins to shake as an Endstone Protector rises from below!":
-                this.spawnTime = System.currentTimeMillis() + (20 * 1000L);
                 this.stage = 5;
                 if (Skyflock.config.golemStage5Warning)
                     RenderUtils.Render2D.showTitle("§cStage 5!", this.location, 1, 30, 1);
@@ -180,14 +189,13 @@ public class Golems extends Feature {
 
             // just spawned
             case "BEWARE - An Endstone Protector has risen!":
-                this.spawnTime = -1L;
                 this.stage = 6;
                 break;
         }
     }
 
     @SubscribeEvent
-    public void onRender(RenderGameOverlayEvent.Post event) {
+    public void onRenderText(RenderGameOverlayEvent.Post event) {
         if (!getConfigStatus() || event.type != RenderGameOverlayEvent.ElementType.ALL) return;
         if (!inEnd())
             return;
@@ -216,6 +224,48 @@ public class Golems extends Feature {
                 fr.drawString("§lStage:§r §a" + this.stage, x, y + fr.FONT_HEIGHT + 2, Color.white.getRGB(), true);
                 break;
         }
+    }
+
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent event) {
+        if (!getConfigStatus() || !inEnd()) return;
+        if (!LocationUtils.location.equals("Dragon's Nest")) return;  // only render in nest
+        if (!Skyflock.config.highlightGolemLocation) return;
+        if (this.stage < 1 || this.location == null) return;
+
+        AxisAlignedBB aabb = new AxisAlignedBB(
+                this.locationX + 2.1,
+                this.stage + 5,
+                this.locationZ + 3.1,
+                this.locationX - 1.1,
+                5,
+                this.locationZ - 2.1
+        );
+
+        if (Skyflock.config.golemHighlightType == 0) {
+            GlStateManager.disableDepth();
+            RenderUtils.Render3D.drawOutlinedBoundingBox(
+                    aabb,
+                    Skyflock.config.golemLocationColour,
+                    2,
+                    event.partialTicks,
+                    false
+            );
+            GlStateManager.enableDepth();
+            return;
+        }
+
+        Color glc2 = new Color(
+                Skyflock.config.golemLocationColour.getRed(),
+                Skyflock.config.golemLocationColour.getGreen(),
+                Skyflock.config.golemLocationColour.getBlue(),
+                128
+        );
+
+        GlStateManager.disableDepth();
+        RenderUtils.Render3D.drawFilledBoundingBox(aabb, glc2, event.partialTicks, false);
+        GlStateManager.enableDepth();
+
     }
 
     public boolean inEnd() {
