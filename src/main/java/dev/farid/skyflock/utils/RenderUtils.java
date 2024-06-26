@@ -48,6 +48,12 @@ public class RenderUtils {
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
         }
+
+        public static void showTitle(String title, String subtitle, int fadeIn, int displayTime, int fadeOut) {
+            mc.ingameGUI.displayTitle(null, null, fadeIn, displayTime, fadeOut);
+            mc.ingameGUI.displayTitle(title, null, fadeIn, displayTime, fadeOut);
+            mc.ingameGUI.displayTitle(null, subtitle, fadeIn, displayTime, fadeOut);
+        }
     }
 
     public static class Render3D {
@@ -205,6 +211,7 @@ public class RenderUtils {
             GlStateManager.disableBlend();
             GlStateManager.popMatrix();
         }
+
         public static void drawFilledBoundingBox(Entity entityIn, Color c, float partialTicks, boolean phase) {
             AxisAlignedBB aabb = getEntityRenderAABB(entityIn, partialTicks);
             drawFilledBoundingBox(aabb, c, partialTicks, phase);
@@ -245,6 +252,7 @@ public class RenderUtils {
             GlStateManager.popMatrix();
 
         }
+
         public static void drawOutlinedBoundingBox(Entity entityIn, Color c, float width, float partialTicks, boolean phase) {
             AxisAlignedBB aabb = getEntityRenderAABB(entityIn, partialTicks);
             drawOutlinedBoundingBox(aabb, c, width, partialTicks, phase);

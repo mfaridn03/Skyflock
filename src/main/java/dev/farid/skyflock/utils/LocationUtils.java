@@ -14,17 +14,14 @@ public class LocationUtils {
     public static boolean inSkyblock = false;
     public static boolean inDungeons = false;
     public static String location = null;
+    public static String area = null;
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         inSkyblock = checkSkyblock();
         inDungeons = inSkyblock && checkDungeons();
-
-        if (!inSkyblock)
-            location = null;
-        else
-            location = getLocation();
-
+        location = getLocation();
+        area = getArea();
     }
 
     private boolean checkSkyblock() {
@@ -51,15 +48,22 @@ public class LocationUtils {
     }
 
     private String getLocation() {
+        if (!inSkyblock) return null;
+
         List<String> lines = PlayerUtils.getScoreboardLines(true);
         if (lines != null) {
             for (String line : lines) {
                 if (line.contains("⏣")) {
-                    line =  TextUtils.removeUnicode(ChatFormatting.stripFormatting(line));
+                    line = TextUtils.removeUnicode(ChatFormatting.stripFormatting(line));
                     return line.trim();
                 }
             }
         }
-        return "wassa!";
+        return null;
+    }
+
+    private String getArea() {
+        if (!inSkyblock) return null;
+        return null;
     }
 }

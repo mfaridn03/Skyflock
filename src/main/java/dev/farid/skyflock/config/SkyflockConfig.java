@@ -12,6 +12,7 @@ import static dev.farid.skyflock.Skyflock.printLogs;
 public class SkyflockConfig extends Vigilant {
 
     public MoveLocationGui minibossHealthGui = new MoveLocationGui("minibossHealthGui", 550, 120);
+    public MoveLocationGui golemLocationGui = new MoveLocationGui("golemLocationGui", 100, 100);
 
     // qol
     @Property(
@@ -268,6 +269,55 @@ public class SkyflockConfig extends Vigilant {
     )
     public int hideFireSale = 0;
 
+    // beastiary
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Golem Helper",
+            description = "Main toggle for stuff related to Endstone Protectors",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public boolean toggleGolems = false;
+
+    @Property(
+            type = PropertyType.BUTTON,
+            name = "Golem Scanner Location",
+            description = "Click to move the gui location",
+            placeholder = "Edit Location",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public void setGolemScannerGui() {
+        this.golemLocationGui.open();
+    }
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Only Scan at Nest",
+            description = "Golem scanning only when you're at dragon's nest",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public boolean golemScanNestOnly = false;
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Stage 4 Warning",
+            description = "Plays a sound and title when golem is at its Awakening phase",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public boolean golemStage4Warning = false;
+
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Stage 5 Warning",
+            description = "Plays a sound and title when golem is at its Summoned phase (about to spawn/already spawned)",
+            category = "Beastiary",
+            subcategory = "Endstone Protector"
+    )
+    public boolean golemStage5Warning = false;
+
 
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
@@ -296,6 +346,10 @@ public class SkyflockConfig extends Vigilant {
 
         addDependency("carryBoxColour", "highlightCarried");
         addDependency("carryNametagColour", "highlightCarried");
+
+        // beastiary
+        addDependency("setGolemScannerGui", "toggleGolems");
+        addDependency("golemScanNestOnly", "toggleGolems");
 
         printLogs(null, "Config loaded", false);
     }

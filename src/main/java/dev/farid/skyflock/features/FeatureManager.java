@@ -1,5 +1,6 @@
 package dev.farid.skyflock.features;
 
+import dev.farid.skyflock.features.beastiary.Golems;
 import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
 import dev.farid.skyflock.features.misc.AutoWave;
@@ -40,6 +41,9 @@ public class FeatureManager {
         // fun
         this.features.add(new AutoWave());
         this.features.add(new HideFireSale());
+
+        // beastiary
+        this.features.add(new Golems());
     }
 
     public void init() {
