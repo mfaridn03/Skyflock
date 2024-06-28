@@ -354,6 +354,14 @@ public class SkyflockConfig extends Vigilant {
     )
     public boolean brickStunWaypoint = false;
 
+    @Property(
+            type = PropertyType.PERCENT_SLIDER,
+            name = "Reduce Mob Opacity",
+            description = "Reduce kuudra mob opacity near supply locations (set above 95% to disable, set below 5% to make them completely invisible)",
+            category = "Kuudra"
+    )
+    public float kuudraMobOpacity = 1f;
+
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();

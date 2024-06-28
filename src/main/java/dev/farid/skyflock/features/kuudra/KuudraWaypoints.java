@@ -23,16 +23,12 @@ public class KuudraWaypoints extends Feature {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if (getConfigStatus() && inKuudra()) {
+        if (getConfigStatus() && LocationUtils.inKuudra) {
             GlStateManager.disableDepth();
             RenderUtils.Render3D.drawOutlinedBoundingBox(this.brickStunAABB, Color.WHITE, 2, event.partialTicks, true);
             RenderUtils.Render3D.drawFilledBoundingBox(this.brickStunAABB, new Color(255, 255, 255, 100), event.partialTicks, true);
             GlStateManager.enableDepth();
         }
-    }
-
-    public boolean inKuudra() {
-        return LocationUtils.location != null && LocationUtils.location.contains("Kuudra's Hollow");
     }
 
     @Override

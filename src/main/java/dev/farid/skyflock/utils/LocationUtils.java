@@ -13,6 +13,7 @@ public class LocationUtils {
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static boolean inSkyblock = false;
     public static boolean inDungeons = false;
+    public static boolean inKuudra = false;
     public static String location = null;
     public static String area = null;
 
@@ -22,6 +23,7 @@ public class LocationUtils {
         inDungeons = inSkyblock && checkDungeons();
         location = getLocation();
         area = getArea();
+        inKuudra = location != null && location.contains("Kuudra's Hollow");
     }
 
     private boolean checkSkyblock() {
@@ -64,6 +66,7 @@ public class LocationUtils {
 
     private String getArea() {
         if (!inSkyblock) return null;
+        // TODO (tablist)
         return null;
     }
 }
