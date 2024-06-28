@@ -344,6 +344,15 @@ public class SkyflockConfig extends Vigilant {
     )
     public int golemHighlightType = 0;
 
+    // kuudra
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Brick Stun Waypoint",
+            description = "Draws a waypoint where to stand to brick stun",
+            category = "Kuudra"
+            // subcategory?
+    )
+    public boolean brickStunWaypoint = false;
 
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));

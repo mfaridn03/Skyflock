@@ -3,6 +3,7 @@ package dev.farid.skyflock.features;
 import dev.farid.skyflock.features.beastiary.Golems;
 import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
+import dev.farid.skyflock.features.kuudra.KuudraWaypoints;
 import dev.farid.skyflock.features.misc.AutoWave;
 import dev.farid.skyflock.features.misc.HideFireSale;
 import dev.farid.skyflock.features.qol.NoEntityDeath;
@@ -44,6 +45,9 @@ public class FeatureManager {
 
         // beastiary
         this.features.add(new Golems());
+
+        // kuudra
+        this.features.add(new KuudraWaypoints());
     }
 
     public void init() {
