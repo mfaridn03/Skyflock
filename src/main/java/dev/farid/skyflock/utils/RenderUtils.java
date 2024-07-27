@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
@@ -305,6 +306,17 @@ public class RenderUtils {
                 GlStateManager.enableDepth();
             }
             GlStateManager.popMatrix();
+        }
+
+        public static AxisAlignedBB blockPosToAABB(BlockPos pos) {
+            return new AxisAlignedBB(
+                    pos.getX(),
+                    pos.getY(),
+                    pos.getZ(),
+                    pos.getX() + 1,
+                    pos.getY() + 1,
+                    pos.getZ() + 1
+            );
         }
     }
 

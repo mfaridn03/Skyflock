@@ -3,6 +3,7 @@ package dev.farid.skyflock.features;
 import dev.farid.skyflock.features.beastiary.Golems;
 import dev.farid.skyflock.features.dungeons.LividHelper;
 import dev.farid.skyflock.features.dungeons.MinibossHp;
+import dev.farid.skyflock.features.foraging.TreeSelector;
 import dev.farid.skyflock.features.kuudra.KuudraWaypoints;
 import dev.farid.skyflock.features.kuudra.MobOpacity;
 import dev.farid.skyflock.features.misc.AutoWave;
@@ -50,6 +51,9 @@ public class FeatureManager {
         // kuudra
         this.features.add(new KuudraWaypoints());
         this.features.add(new MobOpacity());
+
+        // foraging
+        this.features.add(new TreeSelector());
     }
 
     public void init() {

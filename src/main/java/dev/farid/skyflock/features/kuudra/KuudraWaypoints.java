@@ -6,6 +6,7 @@ import dev.farid.skyflock.utils.LocationUtils;
 import dev.farid.skyflock.utils.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -13,9 +14,7 @@ import java.awt.*;
 
 public class KuudraWaypoints extends Feature {
 
-    private final AxisAlignedBB brickStunAABB = new AxisAlignedBB(
-            -154, 29, -172, -153, 30, -171
-    );
+    private final AxisAlignedBB brickStunAABB = RenderUtils.Render3D.blockPosToAABB(new BlockPos(-154, 29, -172));
 
     public KuudraWaypoints() {
         super("Kuudra Waypoints");

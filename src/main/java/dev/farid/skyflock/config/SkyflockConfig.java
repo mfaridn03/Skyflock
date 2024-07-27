@@ -362,6 +362,29 @@ public class SkyflockConfig extends Vigilant {
     )
     public float kuudraMobOpacity = 1f;
 
+    // foraging (ew)
+    @Property(
+            type = PropertyType.SWITCH,
+            name = "Acacia Selector",
+            description = "Selects which tree/pile of acacia wood is optimal to mine (least treecap downtime)\n" +
+                    "§c[!] Requires 500 speed",
+            category = "Foraging",
+            subcategory = "Selector"
+    )
+    public boolean birchTreeSelector = false;
+
+    @Property(
+            type = PropertyType.SLIDER,
+            name = "Monkey Pet Reduction",
+            description = "Select how many percent treecap cooldown reduction from monkey pet",
+            category = "Foraging",
+            subcategory = "Selector",
+            min = 0,
+            max = 50
+    )
+    public int monkeyPetReduction = 0;
+
+
     public SkyflockConfig() {
         super(new File("./config/skyflock.toml"));
         initialize();
@@ -401,6 +424,9 @@ public class SkyflockConfig extends Vigilant {
 
         addDependency("golemLocationColour", "highlightGolemLocation");
         addDependency("golemHighlightType", "highlightGolemLocation");
+
+        // foraging
+        addDependency("monkeyPetReduction", "birchTreeSelector");
 
         printLogs(null, "Config loaded", false);
     }
